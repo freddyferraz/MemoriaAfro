@@ -1,0 +1,34 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoriaAfro", "MemoriaAfro\MemoriaAfro.csproj", "{A2FCE055-603A-4E79-BC3B-A8F4AFA5AE78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoriaAfro.Core", "MemoriaAfro.Core\MemoriaAfro.Core.csproj", "{77552EE3-D408-4A0E-A4E2-96B92F4EA2D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoriaAfro.Infra", "MemoriaAfro.Infra\MemoriaAfro.Infra.csproj", "{5CBA4EED-599B-494C-89F0-EF422499EEEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2FCE055-603A-4E79-BC3B-A8F4AFA5AE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FCE055-603A-4E79-BC3B-A8F4AFA5AE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FCE055-603A-4E79-BC3B-A8F4AFA5AE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FCE055-603A-4E79-BC3B-A8F4AFA5AE78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77552EE3-D408-4A0E-A4E2-96B92F4EA2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77552EE3-D408-4A0E-A4E2-96B92F4EA2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77552EE3-D408-4A0E-A4E2-96B92F4EA2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77552EE3-D408-4A0E-A4E2-96B92F4EA2D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CBA4EED-599B-494C-89F0-EF422499EEEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBA4EED-599B-494C-89F0-EF422499EEEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBA4EED-599B-494C-89F0-EF422499EEEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBA4EED-599B-494C-89F0-EF422499EEEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MemoriaAfro.Core</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    Propositalmente sem PackageReference nenhum: o Core não deve depender
+    de EF Core, Identity, ou qualquer framework de infraestrutura.
+    Isso mantém as regras de negócio e os contratos (interfaces) isolados
+    e fáceis de testar.
+  -->
+
+</Project>
