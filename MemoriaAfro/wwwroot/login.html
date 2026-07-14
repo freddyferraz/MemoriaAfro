@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — Memória Afro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .auth-wrap {
+      max-width: 420px;
+      margin: 56px auto 96px;
+    }
+    .auth-tabs {
+      display: flex;
+      background: var(--color-border);
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 26px;
+    }
+    .auth-tabs button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--color-brown-700);
+    }
+    .auth-tabs button.is-active {
+      background: var(--color-bg-card);
+      color: var(--color-brown-900);
+      box-shadow: var(--shadow);
+    }
+    .auth-form { display: none; }
+    .auth-form.is-active { display: block; }
+  </style>
+</head>
+<body data-pagina="login.html">
+  <header id="site-header" class="site-header"></header>
+
+  <div class="container auth-wrap">
+    <div class="auth-tabs">
+      <button type="button" class="is-active" data-tab="login">Entrar</button>
+      <button type="button" data-tab="registrar">Criar conta</button>
+    </div>
+
+    <div class="form-panel">
+      <form id="form-login" class="auth-form is-active">
+        <div class="form-field">
+          <label for="login-email">E-mail</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-field">
+          <label for="login-senha">Senha</label>
+          <input type="password" id="login-senha" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+      </form>
+
+      <form id="form-registrar" class="auth-form">
+        <div class="form-field">
+          <label for="reg-nome">Nome completo</label>
+          <input type="text" id="reg-nome" required />
+        </div>
+        <div class="form-field">
+          <label for="reg-email">E-mail</label>
+          <input type="email" id="reg-email" required />
+        </div>
+        <div class="form-field">
+          <label for="reg-senha">Senha (mínimo 6 caracteres)</label>
+          <input type="password" id="reg-senha" minlength="6" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Criar conta</button>
+      </form>
+    </div>
+  </div>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/shared.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

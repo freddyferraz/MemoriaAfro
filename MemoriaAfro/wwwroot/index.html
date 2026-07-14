@@ -1,19 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <title>Memória Afro — No Coração do Café</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memória Afro — No Coração do Café</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
-    <h1>Substitua este arquivo pelo HTML real do protótipo.</h1>
-    <p>
-        Coloque aqui (pasta <code>wwwroot/</code>) o <code>index.html</code> exportado
-        do seu protótipo, junto com as pastas <code>css/</code>, <code>js/</code>,
-        <code>images/</code> etc. que ele referenciar.
-    </p>
-    <p>
-        A API continua disponível normalmente em <code>/api/...</code> e o Swagger em
-        <a href="/swagger">/swagger</a>.
-    </p>
+<body data-pagina="index.html">
+  <header id="site-header" class="site-header"></header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Salvaguardando a Cultura<br />no Vale do Café</h1>
+      <p class="lead">
+        Uma plataforma digital dedicada a preservar, celebrar e difundir a herança
+        afro-brasileira de Sacra Família do Tinguá, resgatando memórias e manifestações
+        como Jongo, Maculelê e Capoeira.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="mapa.html">Explorar o Mapa</a>
+        <a class="btn btn-outline" href="acervo.html">Compartilhar Memória</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>O que você encontra aqui</h2>
+        <div class="eyebrow-rule"></div>
+      </div>
+
+      <div class="feature-grid">
+        <a class="feature-card" href="mapa.html">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.4" />
+            </svg>
+          </div>
+          <h3>Mapa Georreferenciado</h3>
+          <p>Descubra pontos históricos e locais de importância cultural em Sacra Família do Tinguá.</p>
+        </a>
+
+        <a class="feature-card" href="acervo.html">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 8.5 8 4h8l4 4.5" />
+              <rect x="3" y="8.5" width="18" height="11.5" rx="2" />
+              <circle cx="12" cy="14" r="3.2" />
+            </svg>
+          </div>
+          <h3>Acervo Colaborativo</h3>
+          <p>Um espaço onde a comunidade compartilha fotos antigas e relatos familiares, construindo nossa história juntos.</p>
+        </a>
+
+        <a class="feature-card" href="oficinas.html">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="10 8 16 12 10 16 10 8" />
+              <circle cx="12" cy="12" r="9.2" />
+            </svg>
+          </div>
+          <h3>Documentário &amp; Oficinas</h3>
+          <p>Assista ao nosso documentário oficial, registros imersivos de Jongo e aprenda em tutoriais de artesanato.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/shared.js"></script>
 </body>
 </html>

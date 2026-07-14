@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acervo Colaborativo — Memória Afro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-pagina="acervo.html">
+  <header id="site-header" class="site-header"></header>
+
+  <div class="container page-heading" style="text-align:center; max-width:680px; margin: 0 auto;">
+    <h1>Acervo Colaborativo</h1>
+    <p class="page-subtitle">
+      Esta plataforma é construída a muitas mãos. Ajude a preservar a memória de Sacra
+      Família do Tinguá enviando fotos antigas, documentos ou relatando histórias da sua família.
+    </p>
+  </div>
+
+  <div class="container" style="padding-bottom: 72px;">
+    <div class="two-col">
+      <div class="form-panel">
+        <h3 style="margin-bottom: 20px;">↑ Envie sua Contribuição</h3>
+
+        <form id="form-upload">
+          <div class="form-field">
+            <label for="campo-nome">Seu Nome</label>
+            <input type="text" id="campo-nome" placeholder="Ex: Maria da Silva" required />
+          </div>
+
+          <div class="form-field">
+            <label for="campo-titulo">Título da Foto/Relato</label>
+            <input type="text" id="campo-titulo" placeholder="Ex: Festa de Jongo em 1980" required />
+          </div>
+
+          <div class="form-field">
+            <label for="campo-descricao">História ou Descrição</label>
+            <textarea id="campo-descricao" placeholder="Conte-nos o que você sabe sobre esta imagem..." required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label>Anexar Arquivo (Foto)</label>
+            <div class="file-drop" id="area-drop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-4 4-2-2-5 5"/></svg>
+              <div id="texto-drop">Clique ou arraste a imagem aqui</div>
+            </div>
+            <input type="file" id="campo-arquivo" accept="image/jpeg,image/png,image/webp" hidden />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="btn-enviar">Enviar para o Acervo</button>
+
+          <p class="form-hint">Ao enviar, você autoriza o uso da imagem no projeto.</p>
+        </form>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom: 18px;">Registros Recentes</h3>
+        <div class="card-grid" id="grade-acervo">
+          <div class="empty-state">Carregando acervo...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/shared.js"></script>
+  <script src="js/acervo.js"></script>
+</body>
+</html>

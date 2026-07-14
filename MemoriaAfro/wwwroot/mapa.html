@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa Histórico — Memória Afro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .map-area {
+      position: relative;
+      background:
+        linear-gradient(rgba(181,101,29,0.05) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, rgba(181,101,29,0.05) 1px, transparent 1px) 0 0 / 32px 32px,
+        #f1e9da;
+      border-radius: var(--radius-lg);
+      min-height: 480px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .map-pin svg { width: 30px; height: 30px; color: var(--color-brown-900); filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25)); transition: transform .15s ease, color .15s ease; }
+    .map-pin:hover svg, .map-pin.is-active svg { color: var(--color-accent); transform: scale(1.15); }
+    .map-caption {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(61,36,24,0.85);
+      color: #f4ead9;
+      font-size: 0.72rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+    .poi-list-item {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: background .12s ease;
+    }
+    .poi-list-item:hover, .poi-list-item.is-active { background: var(--color-pending-bg); }
+    .poi-list-item .poi-name { font-weight: 700; color: var(--color-brown-900); margin-bottom: 2px; }
+    .poi-list-item .poi-cat { font-size: 0.74rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+    .poi-list-item .poi-desc { font-size: 0.84rem; color: var(--color-muted); margin-top: 4px; }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--color-bg-card);
+      border: 1.5px solid var(--color-border);
+      border-radius: 999px;
+      padding: 10px 18px;
+      margin-bottom: 20px;
+    }
+    .search-box svg { width: 18px; height: 18px; color: var(--color-muted); flex-shrink: 0; }
+    .search-box input { border: none; outline: none; flex: 1; font-size: 0.92rem; background: transparent; }
+    .poi-panel { background: var(--color-bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
+    .poi-panel-header { padding: 18px; border-bottom: 1px solid var(--color-border); font-weight: 700; color: var(--color-brown-900); }
+  </style>
+</head>
+<body data-pagina="mapa.html">
+  <header id="site-header" class="site-header"></header>
+
+  <div class="container page-heading">
+    <h1>Mapa Histórico</h1>
+    <p class="page-subtitle">Sacra Família do Tinguá, RJ</p>
+  </div>
+
+  <div class="container" style="padding-bottom: 72px;">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="campo-busca" placeholder="Buscar ponto histórico..." />
+    </div>
+
+    <div class="two-col">
+      <div class="poi-panel">
+        <div class="poi-panel-header" id="contador-pontos">Pontos de Interesse</div>
+        <div id="lista-pontos"></div>
+      </div>
+
+      <div class="map-area" id="area-mapa">
+        <span class="map-caption">Mapa esquemático — protótipo</span>
+      </div>
+    </div>
+  </div>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/shared.js"></script>
+  <script src="js/mapa.js"></script>
+</body>
+</html>

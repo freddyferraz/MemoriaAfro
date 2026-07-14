@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acervo &amp; Oficinas — Memória Afro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .doc-hero {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      background: var(--color-brown-900);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 56px;
+    }
+    .doc-hero-media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #5a3624, #3d2418);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .doc-hero-media img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; opacity: .85; }
+    .doc-badge {
+      position: absolute; top: 16px; left: 16px;
+      background: #b5342a; color: #fff; font-size: .68rem; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px;
+      z-index: 2;
+    }
+    .play-btn {
+      width: 62px; height: 62px; border-radius: 50%;
+      background: var(--color-accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2; box-shadow: 0 6px 20px rgba(0,0,0,.35);
+      transition: transform .15s ease;
+    }
+    .doc-hero-media:hover .play-btn { transform: scale(1.08); }
+    .play-btn svg { width: 24px; height: 24px; margin-left: 3px; }
+    .doc-hero-body { padding: 34px 32px; color: #f4ead9; display: flex; flex-direction: column; justify-content: center; }
+    .doc-hero-body h2 { color: #fff; }
+    .doc-hero-body p { color: #d9c7ac; font-size: .92rem; }
+    .doc-duration { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--color-accent); font-weight: 700; margin-top: 8px; }
+    .doc-duration svg { width: 16px; height: 16px; }
+
+    .split-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    @media (max-width: 900px) { .split-columns { grid-template-columns: 1fr; } .doc-hero { grid-template-columns: 1fr; } }
+
+    .imersivo-item {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--color-bg-card); border-radius: var(--radius);
+      padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+      transition: transform .12s ease;
+    }
+    .imersivo-item:hover { transform: translateX(3px); }
+    .imersivo-play {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--color-pending-bg);
+      color: var(--color-accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .imersivo-play svg { width: 15px; height: 15px; margin-left: 2px; }
+    .imersivo-info { flex: 1; }
+    .imersivo-info .imersivo-title { font-weight: 700; color: var(--color-brown-900); font-size: .92rem; }
+  </style>
+</head>
+<body data-pagina="oficinas.html">
+  <header id="site-header" class="site-header"></header>
+
+  <div class="container page-heading" style="text-align:center; max-width:680px; margin: 0 auto;">
+    <h1>Acervo Digital &amp; Oficinas</h1>
+    <p class="page-subtitle">
+      Explore o documentário oficial do projeto, assista aos registros imersivos com
+      múltiplos ângulos (acessíveis via QR Code na cidade) e aprenda novas habilidades
+      na nossa biblioteca de tutoriais.
+    </p>
+  </div>
+
+  <div class="container" style="padding-top: 40px; padding-bottom: 72px;">
+    <div id="area-documentario"></div>
+
+    <div class="split-columns">
+      <div>
+        <h3 style="margin-bottom:4px;">📍 Arquivo Imersivo (QR Codes)</h3>
+        <p style="color:var(--color-muted); font-size:.85rem; margin-bottom:18px;">
+          Apresentações registradas em múltiplos ângulos. Escaneie os QR Codes nos pontos
+          históricos da cidade ou acesse abaixo.
+        </p>
+        <div id="lista-imersivos"><div class="empty-state">Carregando...</div></div>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom:4px;">📖 Biblioteca de Tutoriais</h3>
+        <p style="color:var(--color-muted); font-size:.85rem; margin-bottom:18px;">
+          Gravações das oficinas ao vivo promovidas pelo projeto. Aprenda e mantenha vivas
+          as práticas artesanais.
+        </p>
+        <div class="card-grid" id="grade-tutoriais"><div class="empty-state">Carregando...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/shared.js"></script>
+  <script src="js/oficinas.js"></script>
+</body>
+</html>
