@@ -1,28 +1,28 @@
-# Estágio de Compilação (Build)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# ==== AJUSTE AQUI ====
+# WEB_PROJECT = nome da pasta/projeto que contém o Program.cs (o .csproj deve ter o mesmo nome)
+# DOTNET_VERSION = versão do .NET do seu projeto (ver <TargetFramework> no .csproj: net8.0 -> 8.0)
+ARG WEB_PROJECT=MemoriaAfro.Web
+ARG DOTNET_VERSION=8.0
+
+# ---------- Build ----------
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build
+ARG WEB_PROJECT
 WORKDIR /src
 
-# Copia os arquivos de projeto de todas as camadas a partir da raiz da solução
-COPY ["MemoriaAfro/MemoriaAfro.csproj", "MemoriaAfro/"]
-COPY ["MemoriaAfro.Core/MemoriaAfro.Core.csproj", "MemoriaAfro.Core/"]
-COPY ["MemoriaAfro.Infra/MemoriaAfro.Infra.csproj", "MemoriaAfro.Infra/"]
-
-# Restaura as dependências apontando para o projeto principal
-RUN dotnet restore "MemoriaAfro/MemoriaAfro.csproj"
-
-# Copia todo o restante do código da solução
+# Copia a solução inteira (Core, Infra, Web...) para o build enxergar todos os projetos
 COPY . .
 
-# Entra na pasta do projeto principal e compila
-WORKDIR "/src/MemoriaAfro"
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet restore "${WEB_PROJECT}/${WEB_PROJECT}.csproj"
+RUN dotnet publish "${WEB_PROJECT}/${WEB_PROJECT}.csproj" -c Release -o /app --no-restore
 
-# Estágio de Execução (Runtime)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# ---------- Runtime ----------
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}
+ARG WEB_PROJECT
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app .
 
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+ENV APP_DLL=${WEB_PROJECT}.dll
+ENV ASPNETCORE_ENVIRONMENT=Production
 
-ENTRYPOINT ["dotnet", "MemoriaAfro.dll"]
+# A porta vem da variável PORT do Render e é lida no Program.cs
+ENTRYPOINT ["sh", "-c", "dotnet $APP_DLL"]

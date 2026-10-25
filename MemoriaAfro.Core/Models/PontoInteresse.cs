@@ -23,6 +23,7 @@ public class PontoInteresse
     public bool AtivoNoMapa { get; set; } = true;
 
     public DateTime CriadoEm { get; set; } = DateTime.UtcNow;
+    public string UrlImagem { get; set; }
 
     public ICollection<ArquivoImersivo> ArquivosImersivos { get; set; } = new List<ArquivoImersivo>();
 }

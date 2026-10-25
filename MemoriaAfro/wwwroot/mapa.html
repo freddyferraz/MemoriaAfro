@@ -1,97 +1,346 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mapa Histórico — Memória Afro</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <style>
-    .map-area {
-      position: relative;
-      background:
-        linear-gradient(rgba(181,101,29,0.05) 1px, transparent 1px) 0 0 / 32px 32px,
-        linear-gradient(90deg, rgba(181,101,29,0.05) 1px, transparent 1px) 0 0 / 32px 32px,
-        #f1e9da;
-      border-radius: var(--radius-lg);
-      min-height: 480px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .map-pin {
-      position: absolute;
-      transform: translate(-50%, -100%);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .map-pin svg { width: 30px; height: 30px; color: var(--color-brown-900); filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25)); transition: transform .15s ease, color .15s ease; }
-    .map-pin:hover svg, .map-pin.is-active svg { color: var(--color-accent); transform: scale(1.15); }
-    .map-caption {
-      position: absolute;
-      bottom: 14px;
-      right: 14px;
-      background: rgba(61,36,24,0.85);
-      color: #f4ead9;
-      font-size: 0.72rem;
-      padding: 6px 12px;
-      border-radius: 999px;
-    }
-    .poi-list-item {
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--color-border);
-      cursor: pointer;
-      transition: background .12s ease;
-    }
-    .poi-list-item:hover, .poi-list-item.is-active { background: var(--color-pending-bg); }
-    .poi-list-item .poi-name { font-weight: 700; color: var(--color-brown-900); margin-bottom: 2px; }
-    .poi-list-item .poi-cat { font-size: 0.74rem; color: var(--color-accent); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
-    .poi-list-item .poi-desc { font-size: 0.84rem; color: var(--color-muted); margin-top: 4px; }
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--color-bg-card);
-      border: 1.5px solid var(--color-border);
-      border-radius: 999px;
-      padding: 10px 18px;
-      margin-bottom: 20px;
-    }
-    .search-box svg { width: 18px; height: 18px; color: var(--color-muted); flex-shrink: 0; }
-    .search-box input { border: none; outline: none; flex: 1; font-size: 0.92rem; background: transparent; }
-    .poi-panel { background: var(--color-bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
-    .poi-panel-header { padding: 18px; border-bottom: 1px solid var(--color-border); font-weight: 700; color: var(--color-brown-900); }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa Histórico — Memória Afro</title>
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Leaflet CSS (Obrigatório para o mapa interativo real) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        .map-area {
+            position: relative;
+            /* Mantém a altura mínima ideal para exibição do mapa interativo */
+            min-height: 480px;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            z-index: 1;
+        }
+
+        .map-caption {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: rgba(61,36,24,0.85);
+            color: #f4ead9;
+            font-size: 0.72rem;
+            padding: 6px 12px;
+            border-radius: 999px;
+            z-index: 1000; /* Garante que o selo fique acima das camadas do mapa */
+            pointer-events: none;
+        }
+
+        .poi-list-item {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: background .12s ease;
+        }
+
+            .poi-list-item:hover, .poi-list-item.is-active {
+                background: var(--color-pending-bg);
+            }
+
+            .poi-list-item .poi-name {
+                font-weight: 700;
+                color: var(--color-brown-900);
+                margin-bottom: 2px;
+            }
+
+            .poi-list-item .poi-cat {
+                font-size: 0.74rem;
+                color: var(--color-accent);
+                text-transform: uppercase;
+                letter-spacing: .04em;
+                font-weight: 700;
+            }
+
+            .poi-list-item .poi-desc {
+                font-size: 0.84rem;
+                color: var(--color-muted);
+                margin-top: 4px;
+            }
+
+            .poi-list-item .poi-rota {
+                display: inline-block;
+                margin-top: 8px;
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: var(--color-accent);
+                text-decoration: none;
+            }
+
+                .poi-list-item .poi-rota:hover {
+                    text-decoration: underline;
+                }
+
+                .poi-list-item .poi-rota:focus-visible {
+                    outline: 2px solid var(--color-accent);
+                    outline-offset: 2px;
+                }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-bg-card);
+            border: 1.5px solid var(--color-border);
+            border-radius: 999px;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+        }
+
+            .search-box svg {
+                width: 18px;
+                height: 18px;
+                color: var(--color-muted);
+                flex-shrink: 0;
+            }
+
+            .search-box input {
+                border: none;
+                outline: none;
+                flex: 1;
+                font-size: 0.92rem;
+                background: transparent;
+            }
+
+        .poi-panel {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .poi-panel-header {
+            padding: 18px;
+            border-bottom: 1px solid var(--color-border);
+            font-weight: 700;
+            color: var(--color-brown-900);
+        }
+
+        /* ---------- Cadastro de ponto (somente admin) ---------- */
+        .cad-painel {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+            .cad-painel[hidden] {
+                display: none;
+            }
+
+            .cad-painel summary {
+                padding: 16px 18px;
+                font-weight: 700;
+                color: var(--color-brown-900);
+                cursor: pointer;
+            }
+
+                .cad-painel summary:focus-visible,
+                .cad-campo input:focus-visible,
+                .cad-campo select:focus-visible,
+                .cad-campo textarea:focus-visible,
+                .cad-btn:focus-visible {
+                    outline: 2px solid var(--color-accent);
+                    outline-offset: 2px;
+                }
+
+        .cad-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 0 18px 18px;
+            border-top: 1px solid var(--color-border);
+            padding-top: 18px;
+        }
+
+        .cad-campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cad-campo--largo {
+            grid-column: 1 / -1;
+        }
+
+        .cad-campo label {
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--color-brown-900);
+        }
+
+        .cad-campo input,
+        .cad-campo select,
+        .cad-campo textarea {
+            font: inherit;
+            font-size: 0.92rem;
+            padding: 10px 14px;
+            background: #fff;
+            border: 1.5px solid var(--color-border);
+            border-radius: 10px;
+        }
+
+        .cad-campo textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+
+        .cad-ajuda {
+            font-size: 0.78rem;
+            color: var(--color-muted);
+        }
+
+        .cad-acoes {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .cad-btn {
+            font: inherit;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 999px;
+            background: var(--color-brown-900);
+            color: #f4ead9;
+            cursor: pointer;
+        }
+
+            .cad-btn:hover {
+                background: var(--color-accent);
+            }
+
+            .cad-btn:disabled {
+                opacity: .6;
+                cursor: wait;
+            }
+
+        .cad-status {
+            font-size: 0.86rem;
+        }
+
+        .cad-status--ok {
+            color: #2f6b3a;
+        }
+
+        .cad-status--erro {
+            color: #9b2c2c;
+        }
+
+        .cad-status--info {
+            color: var(--color-muted);
+        }
+
+        .cad-status a {
+            color: var(--color-accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .cad-form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body data-pagina="mapa.html">
-  <header id="site-header" class="site-header"></header>
+    <header id="site-header" class="site-header"></header>
 
-  <div class="container page-heading">
-    <h1>Mapa Histórico</h1>
-    <p class="page-subtitle">Sacra Família do Tinguá, RJ</p>
-  </div>
-
-  <div class="container" style="padding-bottom: 72px;">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="campo-busca" placeholder="Buscar ponto histórico..." />
+    <div class="container page-heading">
+        <h1>Mapa Histórico</h1>
+        <p class="page-subtitle">Sacra Família do Tinguá, RJ</p>
     </div>
 
-    <div class="two-col">
-      <div class="poi-panel">
-        <div class="poi-panel-header" id="contador-pontos">Pontos de Interesse</div>
-        <div id="lista-pontos"></div>
-      </div>
+    <div class="container" style="padding-bottom: 72px;">
 
-      <div class="map-area" id="area-mapa">
-        <span class="map-caption">Mapa esquemático — protótipo</span>
-      </div>
+        <!-- Visível apenas para administradores (controlado por js/cadastro-ponto.js) -->
+        <details class="cad-painel" id="painel-cadastro" hidden>
+            <summary>Cadastrar novo ponto</summary>
+
+            <form class="cad-form" id="form-ponto" novalidate>
+                <div class="cad-campo">
+                    <label for="cad-nome">Nome do ponto</label>
+                    <input type="text" id="cad-nome" name="nome" maxlength="150" required />
+                </div>
+
+                <div class="cad-campo">
+                    <label for="cad-categoria">Categoria</label>
+                    <select id="cad-categoria" name="categoria" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="1">Histórico</option>
+                        <option value="2">Cultura imaterial</option>
+                        <option value="3">Arquitetura</option>
+                        <option value="4">Sítio arqueológico</option>
+                    </select>
+                </div>
+
+                <div class="cad-campo cad-campo--largo">
+                    <label for="cad-descricao">Descrição</label>
+                    <textarea id="cad-descricao" name="descricao" maxlength="2000" required></textarea>
+                </div>
+
+                <div class="cad-campo cad-campo--largo">
+                    <label for="cad-link">Link do Google Maps</label>
+                    <input type="url" id="cad-link" name="linkGoogleMaps" maxlength="2000"
+                           placeholder="https://maps.app.goo.gl/..." required />
+                    <span class="cad-ajuda">
+                        No Google Maps, abra o local, toque em Compartilhar e copie o link.
+                        A latitude e a longitude são preenchidas automaticamente.
+                    </span>
+                </div>
+
+                <div class="cad-campo cad-campo--largo">
+                    <label for="cad-imagem">URL da Imagem do Local</label>
+                    <input type="url" id="cad-imagem" name="urlImagem" maxlength="2000"
+                           placeholder="https://exemplo.com/foto-igreja.jpg" />
+                    <span class="cad-ajuda">
+                        Insira o link direto de uma imagem representativa do local.
+                    </span>
+                </div>
+
+                <div class="cad-acoes">
+                    <button type="submit" class="cad-btn" id="cadastro-enviar">Salvar ponto</button>
+                    <span id="cadastro-status" class="cad-status" role="status" aria-live="polite"></span>
+                </div>
+            </form>
+        </details>
+
+        <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+            <input type="text" id="campo-busca" placeholder="Buscar ponto histórico..." />
+        </div>
+
+        <div class="two-col">
+            <div class="poi-panel">
+                <div class="poi-panel-header" id="contador-pontos">Pontos de Interesse</div>
+                <div id="lista-pontos"></div>
+            </div>
+
+            <!-- Container onde o Leaflet injetará o mapa interativo -->
+            <div class="map-area" id="area-mapa">
+                <span class="map-caption">Mapa interativo — OpenStreetMap</span>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <footer id="site-footer" class="site-footer"></footer>
+    <footer id="site-footer" class="site-footer"></footer>
 
-  <script src="js/shared.js"></script>
-  <script src="js/mapa.js"></script>
+    <script src="js/shared.js"></script>
+
+    <!-- Leaflet JS (Obrigatório) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script src="js/mapa.js"></script>
+    <script src="js/cadastro-ponto.js"></script>
 </body>
 </html>

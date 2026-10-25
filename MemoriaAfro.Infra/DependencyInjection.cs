@@ -34,6 +34,13 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+        services.AddHttpClient<IGoogleMapsLinkService, GoogleMapsLinkService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(10);
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; MemoriaAfroApi/1.0)");
+        })
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
+
         // Repositórios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IUploadMemoriaRepository, UploadMemoriaRepository>();

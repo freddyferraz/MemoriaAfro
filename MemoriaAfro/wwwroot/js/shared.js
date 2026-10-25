@@ -62,10 +62,20 @@ async function apiRequest(path, { method = "GET", body, isFormData = false } = {
   const contentType = response.headers.get("content-type") || "";
   const data = contentType.includes("application/json") ? await response.json() : null;
 
-  if (!response.ok) {
-    const mensagem = Array.isArray(data) ? data.join(" ") : data?.title || data || "Erro inesperado.";
-    throw new Error(typeof mensagem === "string" ? mensagem : "Erro inesperado.");
-  }
+    if (!response.ok) {
+        let mensagem = "Erro inesperado.";
+        if (Array.isArray(data)) mensagem = data.join(" ");
+        else if (data?.erro) mensagem = data.erro;
+        else if (data?.errors) mensagem = Object.values(data.errors).flat().join(" ");
+        else if (data?.title) mensagem = data.title;
+        else if (typeof data === "string") mensagem = data;
+        else if (response.status === 401) mensagem = "Sua sessão expirou. Entre novamente.";
+        else if (response.status === 403) mensagem = "Você não tem permissão para esta ação.";
+
+        const erro = new Error(mensagem);
+        erro.status = response.status;
+        throw erro;
+    }
 
   return data;
 }
@@ -77,7 +87,8 @@ const Api = {
 
   // Mapa Histórico
   listarPontosInteresse: (termo) =>
-    apiRequest(`/pontosinteresse${termo ? `?termo=${encodeURIComponent(termo)}` : ""}`),
+        apiRequest(`/pontosinteresse${termo ? `?termo=${encodeURIComponent(termo)}` : ""}`),
+    criarPontoInteresse: (dto) => apiRequest("/pontosinteresse", { method: "POST", body: dto }),
 
   // Acervo Colaborativo
   listarUploadsAprovados: () => apiRequest("/uploads"),
